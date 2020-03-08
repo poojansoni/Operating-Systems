@@ -1,0 +1,30 @@
+#include<pthread.h>
+
+int sum[4];
+int i[]={10,20,3,40,5,6,7,8,9,10,11,12};
+void *function (void *arg){
+
+int id= (int)arg;
+int start = id * 3;
+int in=0;
+
+while (in<3){
+sum[id] += *(i+in+start);
+in++;
+}
+}
+
+main(){
+
+pthread_t t1,t2,t3,t4;
+
+pthread_create (&t1, NULL, function, (void *)0);
+pthread_create (&t2, NULL, function, (void *)1);
+pthread_create (&t3, NULL, function, (void *)2);
+pthread_create (&t4, NULL, function, (void *)3);
+pthread_join(t1,NULL);
+pthread_join(t2,NULL);
+pthread_join(t3,NULL);
+pthread_join(t4,NULL);
+printf("%d\n", sum[0] + sum[1] + sum[2] + sum[3]);
+}

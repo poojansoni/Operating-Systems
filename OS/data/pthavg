@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#define NUM 3
+
+void *average(int *p)
+{
+	int i,sum=0;
+	float avg;
+	
+	for(i=0;i<NUM;i++)
+	printf("%d\t",*(p+i));
+	for(i=0;i<NUM;i++)
+	{
+		sum=sum+*(p+i);
+		
+	}
+	avg=sum/NUM;
+	printf("Sum = %d Avreage = %f",sum,avg);
+	return;
+}
+
+void *fact(void *n)
+{
+	int i,p=1;
+	int num;
+	num=*(int *)n;
+	for(i=2;i<=num;i++)
+		p=p*i;
+	printf("Factorial of %d is %d",num,p);
+	return;
+}
+
+
+void main(int c,char *argv[])
+{
+	pthread_t threads[NUM],t1;
+	int x[NUM];
+	int i,rc1,rc2;
+	for(i=0;i<NUM;i++)
+	scanf("%d",&x[i]);
+	printf("Creating Thread One");
+	rc1=pthread_create(&t1,NULL,average,x);
+	
+	for(i=0;i<NUM;i++)
+	{
+		rc2=pthread_create(&threads[i],NULL,fact,(void *)&x[i]);
+		
+	}
+sleep(1);
+	pthread_exit(NULL);
+}
+
+
+
